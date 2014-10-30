@@ -15,8 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-import model.GUIState;
-
 
 @SuppressWarnings("serial")
 public class PayrollFrame extends JFrame{
@@ -35,14 +33,16 @@ public class PayrollFrame extends JFrame{
 	private JButton runPayrollButton;
 	private ActionListener buttonListener;
 	private Border buttonBorder;
+	private JButton[] buttons;
 	
 	public PayrollFrame() {
+		buttons = new JButton[7];
 		buttonBorder = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLUE);
 		topPanel = new JPanel();
 		sidePanel = new JPanel();
 		dataPanel = new DataPanel();
 		titleLabel = new JLabel("PAYROLL SYSTEM");
-		buttonFont = new Font(Font.SERIF, Font.PLAIN, 18);
+		buttonFont = new Font(Font.SERIF, Font.PLAIN, 20);
 		buttonDimension = new Dimension(250, 50);
 		addEmployeeButton = new JButton("ADD EMPLOYEE");
 		deleteEmployeeButton = new JButton("DELETE EMPLOYEE");
@@ -80,12 +80,20 @@ public class PayrollFrame extends JFrame{
 			}
 		};
 		
+		buttons[0] = addEmployeeButton;
+		buttons[1] = deleteEmployeeButton;
+		buttons[2] = postTimeCardButton;
+		buttons[3] = postSalesReceiptButton;
+		buttons[4] = postUnionChargeButton;
+		buttons[5] = changeEmployeeDetailsButton;
+		buttons[6] = runPayrollButton;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Payroll System");
 		setPreferredSize(new Dimension(1000, 600));
 		setBackground(new Color(230, 230, 250));
 		
-		titleLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
+		titleLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
 		titleLabel.setForeground(Color.BLUE);
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -93,57 +101,18 @@ public class PayrollFrame extends JFrame{
 		topPanel.setPreferredSize(new Dimension(1000, 50));
 		topPanel.setLayout(new BorderLayout());
 		topPanel.add(titleLabel, BorderLayout.CENTER);
-				
-		addEmployeeButton.setForeground(Color.BLUE);
-		deleteEmployeeButton.setForeground(Color.BLUE);
-		postTimeCardButton.setForeground(Color.BLUE);
-		postSalesReceiptButton.setForeground(Color.BLUE);
-		postUnionChargeButton.setForeground(Color.BLUE);
-		changeEmployeeDetailsButton.setForeground(Color.BLUE);
-		runPayrollButton.setForeground(Color.BLUE);
-		
-		addEmployeeButton.setFont(buttonFont);
-		deleteEmployeeButton.setFont(buttonFont);
-		postTimeCardButton.setFont(buttonFont);
-		postSalesReceiptButton.setFont(buttonFont);
-		postUnionChargeButton.setFont(buttonFont);
-		changeEmployeeDetailsButton.setFont(buttonFont);
-		runPayrollButton.setFont(buttonFont);
-		
-		addEmployeeButton.setBorder(buttonBorder);
-		deleteEmployeeButton.setBorder(buttonBorder);
-		postTimeCardButton.setBorder(buttonBorder);
-		postSalesReceiptButton.setBorder(buttonBorder);
-		postUnionChargeButton.setBorder(buttonBorder);
-		changeEmployeeDetailsButton.setBorder(buttonBorder);
-		runPayrollButton.setBorder(buttonBorder);
-		
-		addEmployeeButton.setPreferredSize(buttonDimension);
-		deleteEmployeeButton.setPreferredSize(buttonDimension);
-		postTimeCardButton.setPreferredSize(buttonDimension);
-		postSalesReceiptButton.setPreferredSize(buttonDimension);
-		postUnionChargeButton.setPreferredSize(buttonDimension);
-		changeEmployeeDetailsButton.setPreferredSize(buttonDimension);
-		runPayrollButton.setPreferredSize(buttonDimension);
-		
-		addEmployeeButton.addActionListener(buttonListener);
-		deleteEmployeeButton.addActionListener(buttonListener);
-		postTimeCardButton.addActionListener(buttonListener);
-		postSalesReceiptButton.addActionListener(buttonListener);
-		postUnionChargeButton.addActionListener(buttonListener);
-		changeEmployeeDetailsButton.addActionListener(buttonListener);
-		runPayrollButton.addActionListener(buttonListener);
 		
 		sidePanel.setBackground(new Color(230, 230, 250));
 		sidePanel.setPreferredSize(new Dimension(300, 550));
 		
-		sidePanel.add(addEmployeeButton);
-		sidePanel.add(deleteEmployeeButton);
-		sidePanel.add(postTimeCardButton);
-		sidePanel.add(postSalesReceiptButton);
-		sidePanel.add(postUnionChargeButton);
-		sidePanel.add(changeEmployeeDetailsButton);
-		sidePanel.add(runPayrollButton);
+		for(JButton button : buttons) {
+			button.setForeground(Color.BLUE);
+			button.setFont(buttonFont);
+			button.setBorder(buttonBorder);
+			button.setPreferredSize(buttonDimension);
+			button.addActionListener(buttonListener);
+			sidePanel.add(button);
+		}
 		
 		add(topPanel, BorderLayout.NORTH);
 		add(sidePanel, BorderLayout.WEST);
@@ -151,31 +120,32 @@ public class PayrollFrame extends JFrame{
 	}
 	
 	public void changeState(GUIState state) {
+		dataPanel.redraw();
+		dataPanel.repaint();
 		switch (state) {
 			case INITIAL:
-				System.out.println("System Start");
 				dataPanel.drawInitialSetup();
 				break;
 			case ADD_EMPLOYEE:
-				System.out.println("Add Employee");
+				dataPanel.drawAddEmployee();
 				break;
 			case DELETE_EMPLOYEE:
-				System.out.println("Delete Employee");
-				break;
-			case POST_SALES_RECEIPT:
-				System.out.println("Post Sales Receipt");
+				dataPanel.drawDeleteEmployee();
 				break;
 			case POST_TIME_CARD:
-				System.out.println("Post Time Card");
+				dataPanel.drawPostTimeCard();
+				break;
+			case POST_SALES_RECEIPT:
+				dataPanel.drawPostSalesReceipt();
 				break;
 			case POST_UNION_SERVICE_CHARGE:
-				System.out.println("Post Union Service Charge");
+				dataPanel.drawPostUnionServiceCharge();
 				break;
 			case CHANGE_EMPLOYEE_DETAILS:
-				System.out.println("Change Employee Details");
+				dataPanel.drawChangeEmployee();
 				break;	
 			case RUN_PAYROLL:
-				System.out.println("Run Payroll");
+				dataPanel.drawRunPayroll();
 				break;
 		}
 	}

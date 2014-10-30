@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
-import view.PayrollFrame;
 
 public class App {
 	private static PayrollFrame payrollFrame;
